@@ -1,10 +1,36 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <NavBar />
+
+    <main class="container mt-5">
+      <router-view />
+    </main>
+  </div>
 </template>
+
+<script lang="ts">
+import { defineComponent, onMounted } from "vue";
+import { useStore } from "vuex";
+import NavBar from "./components/NavBar.vue";
+
+export default defineComponent({
+  components: {
+    NavBar,
+  },
+
+  setup() {
+    const store = useStore();
+
+    onMounted(() => {
+      const accessToken = sessionStorage.getItem("acsTkn");
+      if (accessToken) {
+        store.dispatch("updateLoggedIn", true);
+      }
+    });
+  },
+});
+</script>
+
 
 <style>
 #app {
@@ -13,18 +39,5 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
