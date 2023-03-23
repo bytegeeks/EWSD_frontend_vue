@@ -19,7 +19,9 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item" v-if="store.state.loggedIn">
-            <router-link class="nav-link" to="/profile">{{store.state.username}}</router-link>
+            <router-link class="nav-link" to="/profile">{{
+              store.state.username
+            }}</router-link>
           </li>
 
           <li class="nav-item dropdown" v-if="store.state.loggedIn">
@@ -201,8 +203,6 @@
           <!-- <li class="nav-item" v-if="!store.state.loggedIn">
             <router-link class="nav-link" to="/register">Register</router-link>
           </li> -->
-
-
         </ul>
       </div>
     </header>

@@ -1,4 +1,4 @@
-# hyrule-jobs
+# EWSD Frontend
 
 ## Project setup
 ```
