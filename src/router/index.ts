@@ -16,6 +16,7 @@ import ViewDepartmentsView from "../views/ViewDepartmentsView.vue";
 import AddDepartmentView from "../views/AddDepartmentView.vue";
 import Logout from "../views/Logout.vue";
 import AddPostView from "../views/AddPostView.vue";
+import SinglePostView from "../views/SinglePostView.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -42,6 +43,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/ideas/create",
         name: "create_post",
         component: AddPostView,
+    },
+    {
+        path: "/ideas/view-post/:post_id",
+        name: "view_single_post",
+        component: SinglePostView,
     },
     {
         path: "/users/view-all-users",

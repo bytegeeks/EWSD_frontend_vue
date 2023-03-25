@@ -19,6 +19,17 @@
               </div>
 
               <div class="form-outline mb-4">
+                <label for="dateofbirth"><strong>Date of Birth</strong></label>
+                <input
+                  class="form-control form-control-lg"
+                  type="date"
+                  name="dateofbirth"
+                  id="dateofbirth"
+                  v-model="state.dob"
+                />
+              </div>
+
+              <div class="form-outline mb-4">
                 <input
                   type="text"
                   id="typePhoneX-2"
@@ -31,50 +42,10 @@
               <div class="form-outline mb-4">
                 <input
                   type="text"
-                  id="typeDOBX-2"
-                  class="form-control form-control-lg"
-                  placeholder="Date of Birth"
-                  v-model="state.dob"
-                />
-              </div>
-
-              <div class="form-outline mb-4">
-                <input
-                  type="text"
                   id="typeAddressX-2"
                   class="form-control form-control-lg"
                   placeholder="Address"
                   v-model="state.address"
-                />
-              </div>
-
-              <div class="form-outline mb-4">
-                <input
-                  type="text"
-                  id="typeRoleX-2"
-                  class="form-control form-control-lg"
-                  placeholder="Role"
-                  v-model="state.role_id"
-                />
-              </div>
-
-              <div class="form-outline mb-4">
-                <input
-                  type="text"
-                  id="typeDeptX-2"
-                  class="form-control form-control-lg"
-                  placeholder="Dept"
-                  v-model="state.dept_id"
-                />
-              </div>
-
-              <div class="form-outline mb-4">
-                <input
-                  type="text"
-                  id="typeGenderX-2"
-                  class="form-control form-control-lg"
-                  placeholder="Gender"
-                  v-model="state.gender"
                 />
               </div>
 
@@ -106,6 +77,57 @@
                   placeholder="Confirm Password"
                   v-model="state.confirmPassword"
                 />
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="role-select"><strong>Select Role</strong></label>
+                <select
+                  class="form-select mt-2"
+                  id="role-select"
+                  aria-label="Role select"
+                  v-model="state.role_id"
+                >
+                  <option value="admin" selected>Admin</option>
+                  <option value="qa_manager">QA Manager</option>
+                  <option value="qa_coordinator">QA Coordinator</option>
+                  <option value="staff">Staff</option>
+                </select>
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="dept-select"
+                  ><strong>Select Department</strong></label
+                >
+                <select
+                  class="form-select mt-2"
+                  id="dept-select"
+                  aria-label="Department select"
+                  v-model="state.dept_id"
+                >
+                  <option
+                    v-for="dept in state.departments"
+                    :key="dept.dept_id"
+                    :value="dept.dept_name"
+                  >
+                    {{ dept.dept_name }}
+                  </option>
+
+                  <p>{{ state.departments }}</p>
+                </select>
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="role-select"><strong>Select Gender</strong></label>
+                <select
+                  class="form-select mt-2"
+                  id="gender-select"
+                  aria-label="Gender select"
+                  v-model="state.gender"
+                >
+                  <option value="male" selected>Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
               </div>
 
               <button
@@ -142,6 +164,7 @@ export default defineComponent({
     });
 
     const state = reactive({
+      departments: [],
       username: "",
       phone: "",
       dob: "",
@@ -152,6 +175,27 @@ export default defineComponent({
       confirmPassword: "",
       role_id: "",
       dept_id: "",
+    });
+
+    onMounted(() => {
+      const accessToken = sessionStorage.getItem("acsTkn");
+      console.log("sending department fetch...");
+      axios
+        .post<any>(
+          "http://localhost:5000/department/view-all-department",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          state.departments = data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
 
     function onSubmit(e: any) {
@@ -182,7 +226,7 @@ export default defineComponent({
 
           if (status) {
             router.push({
-            path: "/users/view-all-users",
+              path: "/users/view-all-users",
             });
             alert("register success");
           }

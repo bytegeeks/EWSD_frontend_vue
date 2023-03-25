@@ -12,7 +12,10 @@
         <div class="row">
           <div class="card px-3 pt-4 my-2 shadow p-3 mb-5 bg-white rounded">
             <div class="card-subtitle">
-              Posted on: {{ post.post_date }} by: {{ post.user_id }}
+              Posted on: <strong>{{ post.post_date }}</strong> by:
+              <strong>{{ post.username }}</strong> on:
+              <strong>{{ post.category_name }}</strong> in:
+              <strong>{{ post.dept_name }}</strong>
             </div>
             <hr />
             <div class="card-body">
@@ -26,19 +29,19 @@
               <div>
                 <p>
                   <strong>Views:</strong> {{ post.post_view_count }} |
-                  <strong>Likes:</strong> {{ post.post_likes }} |
-                  <strong>Dislikes:</strong> {{ post.post_dislikes }} |
+                  <strong>Likes:</strong> {{ post.post_likes.length }} |
+                  <strong>Dislikes:</strong> {{ post.post_dislikes.length }} |
                   <strong>Comments:</strong> {{ post.post_comment_count }}
                 </p>
               </div>
               <hr />
               <div>
-                <button type="button" class="btn btn-success mx-2">Like</button>
-                <button type="button" class="btn btn-danger mx-2">
-                  Dislike
-                </button>
-                <button type="button" class="btn btn-primary mx-2">
-                  Add Comment
+                <button
+                  type="button"
+                  @click="(e) => addCommentHandler(e, post.post_id)"
+                  class="btn btn-success mx-2"
+                >
+                  View Post
                 </button>
               </div>
             </div>
@@ -95,8 +98,13 @@ export default defineComponent({
       }
     });
 
+    function addCommentHandler(e: any, _post_id: any) {
+      router.push({ name: "view_single_post", params: { post_id: _post_id } });
+    }
+
     return {
       state,
+      addCommentHandler,
     };
   },
 });

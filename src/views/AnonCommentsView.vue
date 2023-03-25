@@ -21,7 +21,13 @@
 
               <hr />
               <div>
-                <button type="button" class="btn btn-success">View Post</button>
+                <button
+                  type="button"
+                  @click="(e) => addCommentHandler(e, cmt.post_id)"
+                  class="btn btn-success mx-2"
+                >
+                  View Post
+                </button>
               </div>
             </div>
           </div>
@@ -48,6 +54,10 @@ export default defineComponent({
     const state = reactive({
       comments: [],
     });
+
+    function addCommentHandler(e: any, _post_id: any) {
+      router.push({ name: "view_single_post", params: { post_id: _post_id } });
+    }
 
     onMounted(() => {
       if (!store.state.loggedIn) {
@@ -79,6 +89,7 @@ export default defineComponent({
 
     return {
       state,
+      addCommentHandler,
     };
   },
 });

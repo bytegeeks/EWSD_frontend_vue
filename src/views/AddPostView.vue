@@ -10,55 +10,89 @@
       <hr />
 
       <div class="row p-3">
-        <div class="card-body p-4 text-center">
-          <div class="form-outline mb-4">
+        <div class="card-body p-2">
+          <div class="form-check mb-3">
             <input
-              type="text"
-              id="typePostContentX-2"
-              class="form-control form-control-lg"
-              placeholder="Post Content"
+              class="form-check-input"
+              type="checkbox"
+              value="true"
+              id="defaultCheck1"
+              v-model="state.anonCheck"
+            />
+            <label class="form-check-label" for="defaultCheck1">
+              Comment as Anonymous
+            </label>
+          </div>
+
+          <div class="form-group mb-4">
+            <textarea
+              class="form-control"
+              id="post-content"
+              rows="3"
               v-model="state.post_content"
-            />
+              placeholder="Enter content here"
+            ></textarea>
           </div>
 
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              id="typeDateX-2"
-              class="form-control form-control-lg"
-              placeholder="Date"
-              v-model="state.post_date"
-            />
+          <div class="form-group mb-4">
+            <input type="file" @change="uploadFile" />
+            <!-- <button @click="submitFile">Submit</button> -->
           </div>
 
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              id="typeCategoryX-2"
-              class="form-control form-control-lg"
-              placeholder="Category"
-              v-model="state.category_id"
-            />
+          <div class="form-group mb-4">
+            <label for="cat-select"><strong>Select Category</strong></label>
+            <select
+              class="form-select mt-2"
+              id="cat-select"
+              aria-label="Category select"
+              v-model="state.category_name"
+            >
+              <option
+                v-for="cat in state.categories"
+                :key="cat.category_id"
+                :value="cat.category_name"
+              >
+                {{ cat.category_name }}
+              </option>
+            </select>
           </div>
 
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              id="typeDepartmentX-2"
-              class="form-control form-control-lg"
-              placeholder="Department"
-              v-model="state.dept_id"
-            />
+          <div class="form-group mb-4">
+            <label for="dept-select"><strong>Select Department</strong></label>
+            <select
+              class="form-select mt-2"
+              id="dept-select"
+              aria-label="Department select"
+              v-model="state.dept_name"
+            >
+              <option
+                v-for="dept in state.departments"
+                :key="dept.dept_id"
+                :value="dept.dept_name"
+              >
+                {{ dept.dept_name }}
+              </option>
+            </select>
           </div>
 
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              id="typeAcademicYearX-2"
-              class="form-control form-control-lg"
-              placeholder="Academic Year"
-              v-model="state.academic_year_id"
-            />
+          <div class="form-group mb-4">
+            <label for="dept-select"
+              ><strong>Select Academic Year</strong></label
+            >
+            <select
+              class="form-select mt-2"
+              id="dept-select"
+              aria-label="Academic Year select"
+              v-model="state.academic_year_name"
+            >
+              <option
+                v-for="ay in state.academicYears"
+                :key="ay.academic_year_id"
+                :value="ay.academic_year_name"
+              >
+                {{ ay.academic_year_name }}
+              </option>
+            </select>
           </div>
 
           <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
@@ -71,7 +105,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from "vue";
+import { defineComponent, onMounted, reactive, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
@@ -87,61 +121,164 @@ export default defineComponent({
     const state = reactive({
       post_content: "",
       post_date: "",
-      category_id: "",
-      dept_id: "",
-      academic_year_id: "",
+      categories: [],
+      departments: [],
+      academicYears: [],
+      category_name: "",
+      dept_name: "",
+      anonCheck: "false",
+      academic_year_name: "",
+      post_attachment: "",
     });
+
+    const file = ref();
+
+    function uploadFile(e: any) {
+      file.value = e.target.files[0];
+    }
+
+    // function submitFile(): string {
+    //   const formData = new FormData();
+    //   formData.append("file", file.value);
+    //   const accessToken = sessionStorage.getItem("acsTkn");
+    //   const headers = {
+    //     "Content-Type": "multipart/form-data",
+    //     Authorization: `Bearer ${accessToken}`,
+    //   };
+    //   axios
+    //     .post<any>("http://localhost:5000/file/upload", formData, { headers })
+    //     .then((res) => {
+    //       return res.data.location;
+    //     })
+    //     .catch((err) => console.log(err));
+    // }
 
     onMounted(() => {
       if (!store.state.loggedIn) {
         router.push({ path: "/login" });
       }
+
+      const accessToken = sessionStorage.getItem("acsTkn");
+
+      axios
+        .post<any>(
+          "http://localhost:5000/category/view-all-category",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          state.categories = data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      axios
+        .post<any>(
+          "http://localhost:5000/department/view-all-department",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          state.departments = data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      axios
+        .post<any>(
+          "http://localhost:5000/academic-year/view-all-academic-year",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          state.academicYears = data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
 
-    function onSubmit(e: any) {
+    async function onSubmit(e: any) {
       e.preventDefault();
 
       const accessToken = sessionStorage.getItem("acsTkn");
+      const username = sessionStorage.getItem("username");
       if (accessToken) {
-        axios
-          .post<any>(
-            "http://localhost:5000/post/create-post",
-            {
-              post: {
-                post_type: "text",
-                post_content: state.post_content,
-                post_attachment: "",
-                post_date: state.post_date,
-                dept_id: state.dept_id,
-                category_id: state.category_id,
-                academic_year_id: state.academic_year_id,
-              },
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          )
-          .then(({ data }) => {
-            console.log(data.status);
-            if (data.status) {
-              alert("added post successfully");
+        const formData = new FormData();
+        formData.append("file", file.value);
+        const accessToken = sessionStorage.getItem("acsTkn");
+        const headers = {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${accessToken}`,
+        };
 
-              router.push({
-                path: "/ideas",
-              });
+        axios
+          .post<any>("http://localhost:5000/file/upload", formData, { headers })
+          .then(({ data }) => {
+            console.log(data.data.location)
+            if (data.status) {
+              state.post_attachment = data.data.location;
             }
+
+            axios
+              .post<any>(
+                "http://localhost:5000/post/create-post",
+                {
+                  post: {
+                    post_type: state.anonCheck,
+                    username: username,
+                    post_content: state.post_content,
+                    post_date: new Date().toLocaleString("en-GB", {
+                      hour12: false,
+                    }),
+                    dept_name: state.dept_name,
+                    category_name: state.category_name,
+                    academic_year_name: state.academic_year_name,
+                    post_attachment: state.post_attachment,
+                  },
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                  },
+                }
+              )
+              .then(({ data }) => {
+                console.log(data.status);
+                if (data.status) {
+                  alert("added post successfully");
+
+                  router.push({
+                    path: "/ideas",
+                  });
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           })
-          .catch((error) => {
-            console.log(error);
-          });
+          .catch((err) => console.log(err));
       }
     }
 
     return {
       state,
       onSubmit,
+      uploadFile,
     };
   },
 });

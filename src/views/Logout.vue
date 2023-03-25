@@ -18,6 +18,8 @@ export default defineComponent({
     onMounted(() => {
       if (store.state.loggedIn) {
         sessionStorage.removeItem("acsTkn");
+        sessionStorage.removeItem("user_id");
+        sessionStorage.removeItem("username");
         store.dispatch("updateLoggedIn", false);
 
         router.replace({ path: "/login" });

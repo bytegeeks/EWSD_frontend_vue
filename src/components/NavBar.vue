@@ -20,7 +20,7 @@
         <ul class="navbar-nav">
           <li class="nav-item" v-if="store.state.loggedIn">
             <router-link class="nav-link" to="/profile">{{
-              store.state.username
+              state.username
             }}</router-link>
           </li>
 
@@ -210,21 +210,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, onMounted, reactive } from "vue";
 import { useStore } from "vuex";
 
 export default defineComponent({
   setup() {
     const store = useStore();
 
-    // const state = reactive({
-    //   isLoggedIn: store.state.loggedIn,
-    // });
+    const state = reactive({
+      username: "" as string | null,
+    });
+
+    onMounted(() => {
+      state.username = sessionStorage.getItem("username");
+    });
 
     // console.log(state.isLoggedIn);
 
     return {
       store,
+      state,
     };
   },
 });

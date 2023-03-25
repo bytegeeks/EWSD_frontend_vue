@@ -83,6 +83,8 @@ export default defineComponent({
 
           if (typeof Storage !== "undefined") {
             sessionStorage.setItem("acsTkn", accessToken);
+            sessionStorage.setItem("username", username);
+            sessionStorage.setItem("user_id", user_id);
 
             // set loggedIn status
             store.dispatch("updateLoggedIn", true);

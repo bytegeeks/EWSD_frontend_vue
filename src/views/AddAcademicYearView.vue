@@ -10,50 +10,62 @@
       <hr />
 
       <div class="row p-3">
-        <div class="card-body p-4 text-center">
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              id="typeAYNameX-2"
-              class="form-control form-control-lg"
-              placeholder="Academic Year Name"
-              v-model="state.academic_year_name"
-            />
-          </div>
+        <div class="card bg-dark text-light" style="border-radius: 1rem">
+          <div class="card-body p-4">
+            <div class="form-outline mb-4">
+              <label for="typeAYNameX-2"
+                ><strong>Academic Year Name</strong></label
+              >
+              <input
+                type="text"
+                id="typeAYNameX-2"
+                class="form-control form-control-lg"
+                placeholder="Academic Year Name"
+                v-model="state.academic_year_name"
+              />
+            </div>
 
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              id="typeStartDateX-2"
-              class="form-control form-control-lg"
-              placeholder="Start Date"
-              v-model="state.start_date"
-            />
-          </div>
+            <div class="form-outline mb-4">
+              <label for="typeStartDateX-2"><strong>Start Date</strong></label>
+              <input
+                type="date"
+                id="typeStartDateX-2"
+                class="form-control form-control-lg"
+                placeholder="Start Date"
+                v-model="state.start_date"
+              />
+            </div>
 
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              id="typeClosureDateX-2"
-              class="form-control form-control-lg"
-              placeholder="Closure Date"
-              v-model="state.closure_date"
-            />
-          </div>
+            <div class="form-outline mb-4">
+              <label for="typeClosureDateX-2"
+                ><strong>Closure Date</strong></label
+              >
+              <input
+                type="date"
+                id="typeClosureDateX-2"
+                class="form-control form-control-lg"
+                placeholder="Closure Date"
+                v-model="state.closure_date"
+              />
+            </div>
 
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              id="typeFinalClosureDateX-2"
-              class="form-control form-control-lg"
-              placeholder="Final Closure Date"
-              v-model="state.final_closure_date"
-            />
-          </div>
+            <div class="form-outline mb-4">
+              <label for="typeFinalClosureDateX-2"
+                ><strong>Final Closure Date</strong></label
+              >
+              <input
+                type="date"
+                id="typeFinalClosureDateX-2"
+                class="form-control form-control-lg"
+                placeholder="Final Closure Date"
+                v-model="state.final_closure_date"
+              />
+            </div>
 
-          <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
-            Add
-          </button>
+            <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
+              Add
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -116,8 +128,8 @@ export default defineComponent({
               alert("added academic year successfully");
 
               router.push({
-                path: "/academic-year/view-academic-year"
-              })
+                path: "/academic-year/view-academic-year",
+              });
             }
           })
           .catch((error) => {

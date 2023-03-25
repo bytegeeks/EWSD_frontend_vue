@@ -10,20 +10,22 @@
       <hr />
 
       <div class="row p-3">
-        <div class="card-body p-4 text-center">
-          <div class="form-outline mb-4">
-            <input
-              type="text"
-              id="typeAYNameX-2"
-              class="form-control form-control-lg"
-              placeholder="Department Name"
-              v-model="state.dept_name"
-            />
-          </div>
+        <div class="card bg-dark">
+          <div class="card-body p-4">
+            <div class="form-outline mb-4">
+              <input
+                type="text"
+                id="typeAYNameX-2"
+                class="form-control form-control-lg"
+                placeholder="Department Name"
+                v-model="state.dept_name"
+              />
+            </div>
 
-          <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
-            Add
-          </button>
+            <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
+              Add
+            </button>
+          </div>
         </div>
       </div>
     </div>
