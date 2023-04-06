@@ -17,6 +17,10 @@ import AddDepartmentView from "../views/AddDepartmentView.vue";
 import Logout from "../views/Logout.vue";
 import AddPostView from "../views/AddPostView.vue";
 import SinglePostView from "../views/SinglePostView.vue";
+import EditAcademicYearView from "../views/EditAcademicYearView.vue";
+import EditCategoryView from "../views/EditCategoryView.vue";
+import EditDepartmentView from "../views/EditDepartmentView.vue";
+import EditUserView from "../views/EditUserView.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -65,6 +69,11 @@ const routes: Array<RouteRecordRaw> = [
         component: AddUserView,
     },
     {
+        path: "/users/edit-user/:user_id",
+        name: "edit_user",
+        component: EditUserView,
+    },
+    {
         path: "/comments/view-latest-comment",
         name: "view_latest_comment",
         component: LatestCommentsView,
@@ -85,6 +94,11 @@ const routes: Array<RouteRecordRaw> = [
         component: AddAcademicYearView,
     },
     {
+        path: "/academic-year/edit-academic-year/:academic_year_id",
+        name: "edit_academic_year",
+        component: EditAcademicYearView,
+    },
+    {
         path: "/category/view-categories",
         name: "view_categories",
         component: ViewCategoriesView,
@@ -95,6 +109,11 @@ const routes: Array<RouteRecordRaw> = [
         component: AddCategoryView,
     },
     {
+        path: "/category/edit-category/:category_id",
+        name: "edit_category",
+        component: EditCategoryView,
+    },
+    {
         path: "/department/view-departments",
         name: "view_departments",
         component: ViewDepartmentsView,
@@ -103,6 +122,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/department/add-department",
         name: "add_department",
         component: AddDepartmentView,
+    },
+    {
+        path: "/department/edit-department/:dept_id",
+        name: "edit_department",
+        component: EditDepartmentView,
     },
     {
         path: "/logout",

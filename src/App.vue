@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar />
+    <!-- <NavBar /> -->
 
     <main class="container mt-5">
       <router-view />
@@ -15,7 +15,7 @@ import NavBar from "./components/NavBar.vue";
 
 export default defineComponent({
   components: {
-    NavBar,
+    // NavBar,
   },
 
   setup() {

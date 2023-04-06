@@ -1,5 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
+  <NavBar />
+
   <div class="vh-100">
     <div class="container py-5 h-100">
       <div class="row my-3">
@@ -8,9 +10,24 @@
         </div>
       </div>
       <hr />
+      <div class="row mt-4">
+        <h3>
+          Staff can post suggestions from
+          <strong>{{ state.academic_year_start_date }} </strong> to
+          <strong>{{ state.academic_year_closure_date }} </strong>
+          but can comment on posts until
+          <strong>{{ state.academic_year_final_closure_date }}</strong>
+          for academic year of
+          <strong> {{ state.academic_year_name }}</strong>
+        </h3>
+      </div>
+      <hr />
       <div class="row">
         <div class="col">
-          <div class="card bg-dark text-light shadow rounded" style="width: 18rem">
+          <div
+            class="card bg-dark text-light shadow rounded"
+            style="width: 18rem"
+          >
             <div class="card-body">
               <h3 class="card-title">Total Users</h3>
               <hr />
@@ -19,7 +36,10 @@
           </div>
         </div>
         <div class="col">
-          <div class="card bg-dark text-light shadow rounded" style="width: 18rem">
+          <div
+            class="card bg-dark text-light shadow rounded"
+            style="width: 18rem"
+          >
             <div class="card-body">
               <h3 class="card-title">Total Idea Posts</h3>
               <hr />
@@ -28,7 +48,10 @@
           </div>
         </div>
         <div class="col">
-          <div class="card bg-dark text-light shadow rounded" style="width: 18rem">
+          <div
+            class="card bg-dark text-light shadow rounded"
+            style="width: 18rem"
+          >
             <div class="card-body">
               <h3 class="card-title">Total Categories</h3>
               <hr />
@@ -37,7 +60,10 @@
           </div>
         </div>
         <div class="col">
-          <div class="card bg-dark text-light shadow rounded" style="width: 18rem">
+          <div
+            class="card bg-dark text-light shadow rounded"
+            style="width: 18rem"
+          >
             <div class="card-body">
               <h3 class="card-title">Total Departments</h3>
               <hr />
@@ -76,10 +102,13 @@ import { defineComponent, onMounted, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
+import NavBar from "../components/NavBar.vue";
 
 export default defineComponent({
   name: "HomeView",
-  components: {},
+  components: {
+    NavBar,
+  },
 
   setup() {
     const store = useStore();
@@ -91,12 +120,28 @@ export default defineComponent({
       categoryCount: 0,
       deptCount: 0,
       deptStats: [],
+      academic_year_closure_date: "" as null | string,
+      academic_year_final_closure_date: "" as null | string,
+      academic_year_start_date: "" as null | string,
+      academic_year_name: "" as null | string,
     });
 
     onMounted(() => {
       if (!store.state.loggedIn) {
         router.push({ path: "/login" });
       }
+
+      state.academic_year_closure_date = sessionStorage.getItem(
+        "academic_year_closure_date"
+      );
+
+      state.academic_year_final_closure_date = sessionStorage.getItem(
+        "academic_year_final_closure_date"
+      );
+      state.academic_year_start_date = sessionStorage.getItem(
+        "academic_year_start_date"
+      );
+      state.academic_year_name = sessionStorage.getItem("academic_year_name");
 
       const accessToken = sessionStorage.getItem("acsTkn");
       if (accessToken) {

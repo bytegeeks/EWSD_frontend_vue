@@ -1,5 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
+  <NavBar />
+
   <div class="vh-100">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -149,10 +151,13 @@ import { defineComponent, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import NavBar from "../components/NavBar.vue";
 
 export default defineComponent({
   name: "AddUser",
-  components: {},
+  components: {
+    NavBar,
+  },
 
   setup() {
     const store = useStore();
@@ -203,6 +208,7 @@ export default defineComponent({
 
       if (state.password !== state.confirmPassword) {
         alert("passwords do not match!!!");
+        router.go(0);
       }
 
       const payload = {

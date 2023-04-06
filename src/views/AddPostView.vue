@@ -1,5 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
+  <NavBar />
+
   <div class="vh-100">
     <div class="container py-5 h-100">
       <div class="row my-3">
@@ -20,7 +22,7 @@
               v-model="state.anonCheck"
             />
             <label class="form-check-label" for="defaultCheck1">
-              Comment as Anonymous
+              Post as Anonymous
             </label>
           </div>
 
@@ -105,14 +107,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, computed } from "vue";
+import { defineComponent, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
+import NavBar from "../components/NavBar.vue";
 
 export default defineComponent({
   name: "ViewAllUserView",
-  components: {},
+  components: {
+    NavBar,
+  },
 
   setup() {
     const store = useStore();
@@ -229,7 +234,7 @@ export default defineComponent({
         axios
           .post<any>("http://localhost:5000/file/upload", formData, { headers })
           .then(({ data }) => {
-            console.log(data.data.location)
+            console.log(data.data.location);
             if (data.status) {
               state.post_attachment = data.data.location;
             }

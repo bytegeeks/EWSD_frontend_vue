@@ -1,5 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
+  <NavBar />
+
   <div class="vh-100">
     <div class="container py-5 h-100">
       <div class="row my-3">
@@ -26,10 +28,22 @@
               <td>{{ category.category_id }}</td>
               <td>{{ category.category_name }}</td>
               <td>
-                <button type="button" class="btn btn-warning">Edit</button>
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  @click="(e) => editCategoryHandler(e, category.category_id)"
+                >
+                  Edit
+                </button>
               </td>
               <td>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  @click="(e) => deleteCategoryHandler(e, category.category_id)"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>
@@ -44,10 +58,13 @@ import { defineComponent, onMounted, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
+import NavBar from "../components/NavBar.vue";
 
 export default defineComponent({
   name: "ViewAllUserView",
-  components: {},
+  components: {
+    NavBar,
+  },
 
   setup() {
     const store = useStore();
@@ -56,6 +73,36 @@ export default defineComponent({
     const state = reactive({
       categories: [],
     });
+
+    function editCategoryHandler(e: any, _category_id: string) {
+      router.push({
+        name: "edit_category",
+        params: { category_id: _category_id },
+      });
+    }
+
+    function deleteCategoryHandler(e: any, _category_id: string) {
+      // call delete api
+      alert("are u sure you want to delete?");
+      const accessToken = sessionStorage.getItem("acsTkn");
+      axios
+        .post<any>(
+          "http://localhost:5000/category/delete-category",
+          { category_id: _category_id },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          alert("category delete success");
+          router.go(0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
     onMounted(() => {
       if (!store.state.loggedIn) {
@@ -87,6 +134,8 @@ export default defineComponent({
 
     return {
       state,
+      deleteCategoryHandler,
+      editCategoryHandler,
     };
   },
 });

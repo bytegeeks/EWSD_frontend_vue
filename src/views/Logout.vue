@@ -20,6 +20,13 @@ export default defineComponent({
         sessionStorage.removeItem("acsTkn");
         sessionStorage.removeItem("user_id");
         sessionStorage.removeItem("username");
+        sessionStorage.removeItem("academic_year_id");
+        sessionStorage.removeItem("academic_year_name");
+        sessionStorage.removeItem("academic_year_active");
+        sessionStorage.removeItem("academic_year_start_date");
+        sessionStorage.removeItem("academic_year_closure_date");
+        sessionStorage.removeItem("academic_year_final_closure_date");
+        sessionStorage.removeItem("role");
         store.dispatch("updateLoggedIn", false);
 
         router.replace({ path: "/login" });

@@ -1,5 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
+  <NavBar />
+
   <div class="vh-100">
     <div class="container py-5 h-100">
       <div class="row my-3">
@@ -21,6 +23,7 @@
               <th scope="col">Email</th>
               <th scope="col">Role</th>
               <th scope="col">Department</th>
+              <th colspan="2">Options</th>
             </tr>
           </thead>
           <tbody v-for="user in state.users" :key="user.user_id">
@@ -33,6 +36,24 @@
               <td>{{ user.user_email }}</td>
               <td>{{ user.user_role_id }}</td>
               <td>{{ user.user_dept_id }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  @click="(e) => editUserHandler(e, user.user_id)"
+                >
+                  Edit
+                </button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  @click="(e) => deleteUserHandler(e, user.user_id)"
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -46,10 +67,13 @@ import { defineComponent, onMounted, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
+import NavBar from "../components/NavBar.vue";
 
 export default defineComponent({
   name: "ViewAllUserView",
-  components: {},
+  components: {
+    NavBar,
+  },
 
   setup() {
     const store = useStore();
@@ -58,6 +82,35 @@ export default defineComponent({
     const state = reactive({
       users: [],
     });
+
+    function editUserHandler(e: any, _user_id: string) {
+      router.push({
+        name: "edit_user",
+        params: { user_id: _user_id },
+      });
+    }
+
+    function deleteUserHandler(e: any, _user_id: string) {
+      alert("are u sure you want to delete?");
+      const accessToken = sessionStorage.getItem("acsTkn");
+      axios
+        .post<any>(
+          "http://localhost:5000/user/delete-user",
+          { user_id: _user_id },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          alert("user delete success");
+          router.go(0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
     onMounted(() => {
       if (!store.state.loggedIn) {
@@ -89,6 +142,8 @@ export default defineComponent({
 
     return {
       state,
+      editUserHandler,
+      deleteUserHandler,
     };
   },
 });

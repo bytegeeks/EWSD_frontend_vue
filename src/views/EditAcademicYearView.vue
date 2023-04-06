@@ -6,7 +6,7 @@
     <div class="container py-5 h-100">
       <div class="row my-3">
         <div class="col-6">
-          <h1>Add Academic Year</h1>
+          <h1>Edit Academic Year</h1>
         </div>
       </div>
       <hr />
@@ -64,8 +64,23 @@
               />
             </div>
 
+            <div class="form-outline mb-4">
+              <div class="form-check mb-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value="{{ state.active }}"
+                  id="defaultCheck1"
+                  v-model="state.active"
+                />
+                <label class="form-check-label" for="defaultCheck1">
+                  Active
+                </label>
+              </div>
+            </div>
+
             <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
-              Add
+              Update
             </button>
           </div>
         </div>
@@ -76,7 +91,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
@@ -90,17 +105,46 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
 
     const state = reactive({
       academic_year_name: "",
       start_date: "",
       closure_date: "",
       final_closure_date: "",
+      active: "",
     });
 
     onMounted(() => {
       if (!store.state.loggedIn) {
         router.push({ path: "/login" });
+      }
+
+      // fetch academic year details by ay id
+      const accessToken = sessionStorage.getItem("acsTkn");
+      if (accessToken) {
+        axios
+          .post<any>(
+            "http://localhost:5000/academic-year/view-academic-year",
+            {
+              academic_year_id: route.params.academic_year_id,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          )
+          .then(({ data }) => {
+            state.academic_year_name = data.data.academic_year_name;
+            state.start_date = data.data.start_date;
+            state.closure_date = data.data.closure_date;
+            state.final_closure_date = data.data.final_closure_date;
+            state.active = data.data.active;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     });
 
@@ -111,14 +155,15 @@ export default defineComponent({
       if (accessToken) {
         axios
           .post<any>(
-            "http://localhost:5000/academic-year/create-academic-year",
+            "http://localhost:5000/academic-year/edit-academic-year",
             {
+              academic_year_id: route.params.academic_year_id,
               academicYear: {
                 academic_year_name: state.academic_year_name,
                 start_date: state.start_date,
                 closure_date: state.closure_date,
                 final_closure_date: state.final_closure_date,
-                active: true,
+                active: state.active,
               },
             },
             {
@@ -130,7 +175,8 @@ export default defineComponent({
           .then(({ data }) => {
             console.log(data.status);
             if (data.status) {
-              alert("added academic year successfully");
+              sessionStorage.setItem("academic_year_active", state.active);
+              alert("updated academic year successfully");
 
               router.push({
                 path: "/academic-year/view-academic-year",

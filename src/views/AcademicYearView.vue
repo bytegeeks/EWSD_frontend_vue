@@ -1,5 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
+  <NavBar />
+
   <div class="vh-100">
     <div class="container py-5 h-100">
       <div class="row my-3">
@@ -31,10 +33,26 @@
               <td>{{ ay.final_closure_date }}</td>
               <td>{{ ay.active }}</td>
               <td>
-                <button type="button" class="btn btn-warning">Edit</button>
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  @click="
+                    (e) => editAcademicYearHandler(e, ay.academic_year_id)
+                  "
+                >
+                  Edit
+                </button>
               </td>
               <td>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  @click="
+                    (e) => deleteAcademicYearHandler(e, ay.academic_year_id)
+                  "
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>
@@ -49,10 +67,13 @@ import { defineComponent, onMounted, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
+import NavBar from "../components/NavBar.vue";
 
 export default defineComponent({
   name: "ViewAllUserView",
-  components: {},
+  components: {
+    NavBar,
+  },
 
   setup() {
     const store = useStore();
@@ -90,8 +111,40 @@ export default defineComponent({
       }
     });
 
+    function editAcademicYearHandler(e: any, _academic_year_id: string) {
+      router.push({
+        name: "edit_academic_year",
+        params: { academic_year_id: _academic_year_id },
+      });
+    }
+
+    function deleteAcademicYearHandler(e: any, _academic_year_id: string) {
+      // call delete api
+      alert("are u sure you want to delete?");
+      const accessToken = sessionStorage.getItem("acsTkn");
+      axios
+        .post<any>(
+          "http://localhost:5000/academic-year/delete-academic-year",
+          { academic_year_id: _academic_year_id },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          alert("academic year delete success");
+          router.go(0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     return {
       state,
+      editAcademicYearHandler,
+      deleteAcademicYearHandler,
     };
   },
 });

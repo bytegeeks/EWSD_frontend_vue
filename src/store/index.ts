@@ -2,9 +2,10 @@ import { createStore } from "vuex";
 
 export default createStore({
     state: {
-        loggedIn: null,
+        loggedIn: false,
         username: "",
         user_id: "",
+        role: "",
     },
     getters: {},
     mutations: {
@@ -20,6 +21,10 @@ export default createStore({
             state.user_id = payload;
             console.log("user_id: " + state.user_id);
         },
+        setRole(state, payload) {
+            state.role = payload;
+            console.log("role: " + state.role);
+        },
     },
     actions: {
         updateLoggedIn({ commit }, payload) {
@@ -30,6 +35,9 @@ export default createStore({
         },
         setUserId({ commit }, payload) {
             commit("setUserId", payload);
+        },
+        setRole({ commit }, payload) {
+            commit("setRole", payload);
         },
     },
     modules: {},

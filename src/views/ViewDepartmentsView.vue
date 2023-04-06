@@ -1,5 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
+  <NavBar />
+
   <div class="vh-100">
     <div class="container py-5 h-100">
       <div class="row my-3">
@@ -18,18 +20,27 @@
               <th colspan="2">Options</th>
             </tr>
           </thead>
-          <tbody
-            v-for="dept in state.departments"
-            :key="dept.dept_id"
-          >
+          <tbody v-for="dept in state.departments" :key="dept.dept_id">
             <tr>
               <td>{{ dept.dept_id }}</td>
               <td>{{ dept.dept_name }}</td>
               <td>
-                <button type="button" class="btn btn-warning">Edit</button>
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  @click="(e) => editDepartmentHandler(e, dept.dept_id)"
+                >
+                  Edit
+                </button>
               </td>
               <td>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  @click="(e) => deleteDepartmentHandler(e, dept.dept_id)"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>
@@ -44,10 +55,13 @@ import { defineComponent, onMounted, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
+import NavBar from "../components/NavBar.vue";
 
 export default defineComponent({
   name: "ViewAllUserView",
-  components: {},
+  components: {
+    NavBar,
+  },
 
   setup() {
     const store = useStore();
@@ -85,8 +99,40 @@ export default defineComponent({
       }
     });
 
+    function editDepartmentHandler(e: any, _dept_id: string) {
+      router.push({
+        name: "edit_department",
+        params: { dept_id: _dept_id },
+      });
+    }
+
+    function deleteDepartmentHandler(e: any, _dept_id: string) {
+      // call delete api
+      alert("are u sure you want to delete?");
+      const accessToken = sessionStorage.getItem("acsTkn");
+      axios
+        .post<any>(
+          "http://localhost:5000/department/delete-department",
+          { dept_id: _dept_id },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          alert("department delete success");
+          router.go(0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     return {
       state,
+      editDepartmentHandler,
+      deleteDepartmentHandler,
     };
   },
 });

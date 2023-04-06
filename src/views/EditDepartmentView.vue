@@ -6,12 +6,12 @@
     <div class="container py-5 h-100">
       <div class="row my-3">
         <div class="col-6">
-          <h1>Add Department</h1>
+          <h1>Edit Department</h1>
         </div>
       </div>
       <hr />
 
-      <div class="row p-3">
+      <div class="row p-4">
         <div class="card bg-dark">
           <div class="card-body p-4">
             <div class="form-outline mb-4">
@@ -19,13 +19,13 @@
                 type="text"
                 id="typeAYNameX-2"
                 class="form-control form-control-lg"
-                placeholder="Department Name"
+                placeholder="Category Name"
                 v-model="state.dept_name"
               />
             </div>
 
             <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
-              Add
+              Update
             </button>
           </div>
         </div>
@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
@@ -50,6 +50,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
 
     const state = reactive({
       dept_name: "",
@@ -59,6 +60,24 @@ export default defineComponent({
       if (!store.state.loggedIn) {
         router.push({ path: "/login" });
       }
+
+      const accessToken = sessionStorage.getItem("acsTkn");
+
+      axios
+        .post<any>(
+          "http://localhost:5000/department/view-department",
+          {
+            dept_id: route.params.dept_id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          state.dept_name = data.data.dept_name;
+        });
     });
 
     function onSubmit(e: any) {
@@ -68,8 +87,9 @@ export default defineComponent({
       if (accessToken) {
         axios
           .post<any>(
-            "http://localhost:5000/department/create-department",
+            "http://localhost:5000/department/edit-department",
             {
+              dept_id: route.params.dept_id,
               dept: {
                 dept_name: state.dept_name,
               },
@@ -83,7 +103,7 @@ export default defineComponent({
           .then(({ data }) => {
             console.log(data.status);
             if (data.status) {
-              alert("added department successfully");
+              alert("updated department successfully");
 
               router.push({
                 path: "/department/view-departments",

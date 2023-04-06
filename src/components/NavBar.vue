@@ -19,9 +19,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item" v-if="store.state.loggedIn">
-            <router-link class="nav-link" to="/profile">{{
-              state.username
-            }}</router-link>
+            <router-link class="nav-link" to="/profile">Profile</router-link>
           </li>
 
           <li class="nav-item dropdown" v-if="store.state.loggedIn">
@@ -71,7 +69,8 @@
                   >View QA Coordinator</router-link
                 >
               </li>
-              <li>
+
+              <li v-if="store.state.role === 'admin'">
                 <router-link class="dropdown-item" to="/users/add-user"
                   >Add User</router-link
                 >
@@ -127,7 +126,7 @@
                   >View Academic Year</router-link
                 >
               </li>
-              <li>
+              <li v-if="store.state.role === 'admin'">
                 <router-link
                   class="dropdown-item"
                   to="/academic-year/add-academic-year"
@@ -156,7 +155,7 @@
                   >View Categories</router-link
                 >
               </li>
-              <li>
+              <li v-if="store.state.role === 'admin'">
                 <router-link class="dropdown-item" to="/category/add-category"
                   >Add Category</router-link
                 >
@@ -183,7 +182,7 @@
                   >View Departments</router-link
                 >
               </li>
-              <li>
+              <li v-if="store.state.role === 'admin'">
                 <router-link
                   class="dropdown-item"
                   to="/department/add-department"
@@ -219,12 +218,13 @@ export default defineComponent({
 
     const state = reactive({
       username: "" as string | null,
+      role: "" as string | null,
     });
 
     onMounted(() => {
       state.username = sessionStorage.getItem("username");
     });
-
+    console.log(">>>>", store.state.role);
     // console.log(state.isLoggedIn);
 
     return {

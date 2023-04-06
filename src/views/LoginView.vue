@@ -77,20 +77,63 @@ export default defineComponent({
         .then(function ({ data, status }) {
           console.log(data.message);
 
-          let accessToken = data.accessToken;
-          let username = data.username;
-          let user_id = data.user_id;
+          var accessToken = data.accessToken;
+          var username = data.username;
+          var user_id = data.user_id;
+          var user_role_id = data.user_role_id;
 
-          if (typeof Storage !== "undefined") {
-            sessionStorage.setItem("acsTkn", accessToken);
-            sessionStorage.setItem("username", username);
-            sessionStorage.setItem("user_id", user_id);
+          axios
+            .post<any>(
+              "http://localhost:5000/academic-year/get-latest-active-academic-year",
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }
+            )
+            .then(({ data, status }) => {
+              var academicYear = data.data;
+              console.log(academicYear);
 
-            // set loggedIn status
-            store.dispatch("updateLoggedIn", true);
-            store.dispatch("setUsername", username);
-            store.dispatch("setUserId", user_id);
-          }
+              if (typeof Storage !== "undefined") {
+                sessionStorage.setItem("acsTkn", accessToken);
+                sessionStorage.setItem("username", username);
+                sessionStorage.setItem("user_id", user_id);
+                sessionStorage.setItem(
+                  "academic_year_id",
+                  academicYear.academic_year_id
+                );
+                sessionStorage.setItem(
+                  "academic_year_name",
+                  academicYear.academic_year_name
+                );
+                sessionStorage.setItem(
+                  "academic_year_active",
+                  academicYear.active
+                );
+                sessionStorage.setItem(
+                  "academic_year_start_date",
+                  academicYear.start_date
+                );
+                sessionStorage.setItem(
+                  "academic_year_closure_date",
+                  academicYear.closure_date
+                );
+                sessionStorage.setItem(
+                  "academic_year_final_closure_date",
+                  academicYear.final_closure_date
+                );
+                sessionStorage.setItem("role", user_role_id);
+                console.log("setting role now");
+                store.dispatch("setRole", user_role_id);
+
+                // set loggedIn status
+                store.dispatch("updateLoggedIn", true);
+                store.dispatch("setUsername", username);
+                store.dispatch("setUserId", user_id);
+              }
+            });
 
           // when successful -> redirect to home
           if (status) {

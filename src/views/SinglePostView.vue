@@ -1,5 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
+  <NavBar />
+
   <div class="vh-100">
     <div class="container py-5 h-100">
       <div class="row my-3">
@@ -11,7 +13,8 @@
       <div class="row">
         <div class="card px-3 pt-4 my-2 shadow p-3 mb-5 bg-white rounded">
           <div class="card-subtitle">
-            Posted on: {{ state.post.post_date }} by: {{ state.post.username }}
+            Posted on: {{ state.post.post_date }} by:
+            {{ state.post.post_type ? state.post.username : "ANONYMOUS" }}
           </div>
           <hr />
           <div class="card-body">
@@ -54,7 +57,7 @@
             </div>
 
             <hr />
-            <div class>
+            <div class v-if="state.isAcademicYearActive">
               <div class="form-check">
                 <input
                   class="form-check-input"
@@ -84,6 +87,11 @@
                 </button>
               </div>
             </div>
+            <div v-else>
+              <div>
+                <i>No longer accepting comments...</i>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -96,10 +104,13 @@ import { defineComponent, onMounted, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
+import NavBar from "../components/NavBar.vue";
 
 export default defineComponent({
   name: "SinglePostView",
-  components: {},
+  components: {
+    NavBar,
+  },
 
   setup() {
     const store = useStore();
@@ -110,12 +121,18 @@ export default defineComponent({
       post: {},
       comment: "",
       anonCheck: "false",
+      isAcademicYearActive: null as boolean | null,
     });
 
     onMounted(() => {
       if (!store.state.loggedIn) {
         router.push({ path: "/login" });
       }
+
+      const academicYearActive = sessionStorage.getItem("academic_year_active");
+      state.isAcademicYearActive = academicYearActive === "true";
+
+      console.log(state.isAcademicYearActive);
 
       const accessToken = sessionStorage.getItem("acsTkn");
       if (accessToken) {
