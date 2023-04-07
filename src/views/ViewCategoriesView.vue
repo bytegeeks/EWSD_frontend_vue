@@ -17,7 +17,7 @@
             <tr>
               <th scope="col">Category ID</th>
               <th scope="col">Category Name</th>
-              <th colspan="2">Options</th>
+              <th colspan="2" v-if="store.state.role == 'admin'">Options</th>
             </tr>
           </thead>
           <tbody
@@ -27,7 +27,7 @@
             <tr>
               <td>{{ category.category_id }}</td>
               <td>{{ category.category_name }}</td>
-              <td>
+              <td v-if="store.state.role == 'admin'">
                 <button
                   type="button"
                   class="btn btn-warning"
@@ -36,7 +36,7 @@
                   Edit
                 </button>
               </td>
-              <td>
+              <td v-if="store.state.role == 'admin'">
                 <button
                   type="button"
                   class="btn btn-danger"
@@ -134,6 +134,7 @@ export default defineComponent({
 
     return {
       state,
+      store,
       deleteCategoryHandler,
       editCategoryHandler,
     };

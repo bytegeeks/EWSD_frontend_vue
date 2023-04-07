@@ -129,11 +129,15 @@ export default defineComponent({
         router.push({ path: "/login" });
       }
 
-      const academicYearActive = sessionStorage.getItem("academic_year_active");
-      state.isAcademicYearActive = academicYearActive === "true";
+      let closure_date = sessionStorage.getItem("academic_year_closure_date");
 
-      console.log(state.isAcademicYearActive);
-
+      if (closure_date) {
+        const tf = Date.parse(closure_date);
+        const tn = Date.now();
+        console.log(tf, tn);
+        // if tf < tn -> it has passed the final closure date
+        state.isAcademicYearActive = tf > tn;
+      }
       const accessToken = sessionStorage.getItem("acsTkn");
       if (accessToken) {
         axios
@@ -141,7 +145,7 @@ export default defineComponent({
             "http://localhost:5000/post/view-post",
             {
               post_id: route.params.post_id,
-              user_id: sessionStorage.getItem("user_id"),
+              // _user_id: sessionStorage.getItem("user_id"),
             },
             {
               headers: {

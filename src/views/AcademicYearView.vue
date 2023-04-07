@@ -137,6 +137,7 @@ export default defineComponent({
           router.go(0);
         })
         .catch((err) => {
+          alert("must remain at least one active academic year")
           console.log(err);
         });
     }

@@ -181,10 +181,15 @@ export default defineComponent({
               router.push({
                 path: "/academic-year/view-academic-year",
               });
+            } else {
+              alert(data.message);
+              router.go(0);
             }
           })
           .catch((error) => {
             console.log(error);
+            alert("must have at least one active academic year");
+            router.go(0);
           });
       }
     }

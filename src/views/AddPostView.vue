@@ -12,7 +12,7 @@
       <hr />
 
       <div class="row p-3">
-        <div class="card-body p-2">
+        <div class="card-body p-2" v-if="state.canUserPost">
           <div class="form-check mb-3">
             <input
               class="form-check-input"
@@ -101,6 +101,9 @@
             Create
           </button>
         </div>
+        <div v-else>
+          Post submissions cannot be done as it has passed the closure date...
+        </div>
       </div>
     </div>
   </div>
@@ -134,6 +137,7 @@ export default defineComponent({
       anonCheck: "false",
       academic_year_name: "",
       post_attachment: "",
+      canUserPost: null as boolean | null,
     });
 
     const file = ref();
@@ -161,6 +165,16 @@ export default defineComponent({
     onMounted(() => {
       if (!store.state.loggedIn) {
         router.push({ path: "/login" });
+      }
+
+      const start_date = sessionStorage.getItem("academic_year_start_date");
+      const end_date = sessionStorage.getItem("academic_year_closure_date");
+      if (start_date && end_date) {
+        const ts = Date.parse(start_date);
+        const te = Date.parse(end_date);
+        const tn = Date.now();
+        // if tf < tn -> it has passed the final closure date
+        state.canUserPost = tn >= ts && tn < te;
       }
 
       const accessToken = sessionStorage.getItem("acsTkn");

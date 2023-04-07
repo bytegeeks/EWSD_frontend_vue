@@ -17,14 +17,14 @@
             <tr>
               <th scope="col">Department ID</th>
               <th scope="col">Department Name</th>
-              <th colspan="2">Options</th>
+              <th colspan="2" v-if="store.state.role == 'admin'">Options</th>
             </tr>
           </thead>
           <tbody v-for="dept in state.departments" :key="dept.dept_id">
             <tr>
               <td>{{ dept.dept_id }}</td>
               <td>{{ dept.dept_name }}</td>
-              <td>
+              <td v-if="store.state.role == 'admin'">
                 <button
                   type="button"
                   class="btn btn-warning"
@@ -33,7 +33,7 @@
                   Edit
                 </button>
               </td>
-              <td>
+              <td v-if="store.state.role == 'admin'">
                 <button
                   type="button"
                   class="btn btn-danger"
@@ -131,6 +131,7 @@ export default defineComponent({
 
     return {
       state,
+      store,
       editDepartmentHandler,
       deleteDepartmentHandler,
     };

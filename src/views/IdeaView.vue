@@ -32,6 +32,24 @@
       >
         View My Posts
       </button>
+
+      <a
+        type="button"
+        @click="(e) => downloadPosts(e)"
+        class="btn btn-outline-success mx-3"
+        v-show="!state.isActiveAcademicYear && store.state.role === 'qa_manager'"
+      >
+        Download Idea Posts CSV
+      </a>
+
+      <a
+        type="button"
+        @click="(e) => downloadAttachments(e)"
+        class="btn btn-outline-success mx-3"
+        v-show="!state.isActiveAcademicYear && store.state.role === 'qa_manager'"
+      >
+        Download Attachment ZIP
+      </a>
       <hr />
       <div v-for="post in state.posts" :key="post.post_id">
         <div class="row">
@@ -39,7 +57,7 @@
             <div class="card-subtitle">
               Posted on: <strong>{{ post.post_date }}</strong> by:
               <strong>{{
-                post.post_type ? post.username : "ANONYMOUS"
+                !post.post_type ? post.username : "ANONYMOUS"
               }}</strong>
               on: <strong>{{ post.category_name }}</strong> in:
               <strong>{{ post.dept_name }}</strong>
@@ -98,11 +116,24 @@ export default defineComponent({
 
     const state = reactive({
       posts: [],
+      isActiveAcademicYear: true as boolean | null,
     });
 
     onMounted(() => {
       if (!store.state.loggedIn) {
         router.push({ path: "/login" });
+      }
+
+      let final_closure_date = sessionStorage.getItem(
+        "academic_year_final_closure_date"
+      );
+
+      if (final_closure_date) {
+        const tf = Date.parse(final_closure_date);
+        const tn = Date.now();
+        console.log(tf, tn, tf > tn);
+        // if tf < tn -> it has passed the final closure date
+        state.isActiveAcademicYear = tf > tn;
       }
 
       const accessToken = sessionStorage.getItem("acsTkn");
@@ -204,12 +235,55 @@ export default defineComponent({
       }
     }
 
+    function downloadPosts(e: any) {
+      const accessToken = sessionStorage.getItem("acsTkn");
+      axios({
+        url: "http://localhost:5000/post/download-posts-csv", // File URL Goes Here
+        method: "POST",
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((res) => {
+        var FILE = window.URL.createObjectURL(new Blob([res.data]));
+
+        var docUrl = document.createElement("a");
+        docUrl.href = FILE;
+        docUrl.setAttribute("download", "idea_posts.csv");
+        document.body.appendChild(docUrl);
+        docUrl.click();
+      });
+    }
+
+    function downloadAttachments(e: any) {
+      const accessToken = sessionStorage.getItem("acsTkn");
+      axios({
+        url: "http://localhost:5000/post/download-attachments", // File URL Goes Here
+        method: "POST",
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((res) => {
+        var FILE = window.URL.createObjectURL(new Blob([res.data]));
+
+        var docUrl = document.createElement("a");
+        docUrl.href = FILE;
+        docUrl.setAttribute("download", "attachments.zip");
+        document.body.appendChild(docUrl);
+        docUrl.click();
+      });
+    }
+
     return {
       state,
+      store,
       addCommentHandler,
       viewAllPostHandler,
       viewPopularPostHandler,
       viewMyPostHandler,
+      downloadPosts,
+      downloadAttachments,
     };
   },
 });

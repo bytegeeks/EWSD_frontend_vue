@@ -55,6 +55,11 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              v-show="
+                store.state.role == 'admin' ||
+                store.state.role == 'qa_manager' ||
+                store.state.role == 'qa_coordinator'
+              "
             >
               Users
             </a>
@@ -70,7 +75,7 @@
                 >
               </li>
 
-              <li v-if="store.state.role === 'admin'">
+              <li v-if="store.state.role == 'admin'">
                 <router-link class="dropdown-item" to="/users/add-user"
                   >Add User</router-link
                 >
@@ -86,6 +91,11 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              v-show="
+                store.state.role == 'admin' ||
+                store.state.role == 'qa_manager' ||
+                store.state.role == 'qa_coordinator'
+              "
             >
               Comments
             </a>
@@ -115,6 +125,7 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              v-show="store.state.role === 'admin'"
             >
               Academic Year
             </a>
@@ -126,7 +137,7 @@
                   >View Academic Year</router-link
                 >
               </li>
-              <li v-if="store.state.role === 'admin'">
+              <li v-if="store.state.role == 'admin'">
                 <router-link
                   class="dropdown-item"
                   to="/academic-year/add-academic-year"
@@ -144,6 +155,10 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              v-show="
+                store.state.role === 'admin' ||
+                store.state.role === 'qa_manager'
+              "
             >
               Categories
             </a>
@@ -155,7 +170,7 @@
                   >View Categories</router-link
                 >
               </li>
-              <li v-if="store.state.role === 'admin'">
+              <li v-if="store.state.role == 'admin' || store.state.role == 'qa_manager'">
                 <router-link class="dropdown-item" to="/category/add-category"
                   >Add Category</router-link
                 >
@@ -171,6 +186,11 @@
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              v-show="
+                store.state.role === 'admin' ||
+                store.state.role === 'qa_coordinator' ||
+                store.state.role === 'qa_manager'
+              "
             >
               Departments
             </a>
@@ -182,7 +202,7 @@
                   >View Departments</router-link
                 >
               </li>
-              <li v-if="store.state.role === 'admin'">
+              <li v-if="store.state.role == 'admin'">
                 <router-link
                   class="dropdown-item"
                   to="/department/add-department"
@@ -225,6 +245,7 @@ export default defineComponent({
       state.username = sessionStorage.getItem("username");
     });
     console.log(">>>>", store.state.role);
+    console.log("state");
     // console.log(state.isLoggedIn);
 
     return {

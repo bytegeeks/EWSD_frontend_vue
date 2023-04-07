@@ -23,7 +23,7 @@
               <th scope="col">Email</th>
               <th scope="col">Role</th>
               <th scope="col">Department</th>
-              <th colspan="2">Options</th>
+              <th colspan="2" v-if="store.state.role == 'admin'">Options</th>
             </tr>
           </thead>
           <tbody v-for="user in state.users" :key="user.user_id">
@@ -36,7 +36,7 @@
               <td>{{ user.user_email }}</td>
               <td>{{ user.user_role_id }}</td>
               <td>{{ user.user_dept_id }}</td>
-              <td>
+              <td v-if="store.state.role == 'admin'">
                 <button
                   type="button"
                   class="btn btn-warning"
@@ -45,7 +45,7 @@
                   Edit
                 </button>
               </td>
-              <td>
+              <td v-if="store.state.role == 'admin'">
                 <button
                   type="button"
                   class="btn btn-danger"
@@ -142,6 +142,7 @@ export default defineComponent({
 
     return {
       state,
+      store,
       editUserHandler,
       deleteUserHandler,
     };
