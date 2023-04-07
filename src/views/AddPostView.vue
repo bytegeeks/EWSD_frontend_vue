@@ -96,10 +96,19 @@
               </option>
             </select>
           </div>
-
           <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
             Create
           </button>
+
+          <!-- <ModalComp @close="toggleModal" :modalActive="modalActive">
+            <div class="modal-content">
+              <h1>This is a ModalComp Header</h1>
+              <p>This is a modal message</p>
+            </div>
+          </ModalComp>
+          <button @click="toggleModal" class="btn btn-primary" type="button">
+            Open ModalComp
+          </button> -->
         </div>
         <div v-else>
           Post submissions cannot be done as it has passed the closure date...
@@ -115,16 +124,23 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
+// import ModalComp from "../components/ModalComp.vue";
 
 export default defineComponent({
   name: "ViewAllUserView",
   components: {
     NavBar,
+    // ModalComp,
   },
 
   setup() {
     const store = useStore();
     const router = useRouter();
+
+    const modalActive = ref(false);
+    const toggleModal = () => {
+      modalActive.value = !modalActive.value;
+    };
 
     const state = reactive({
       post_content: "",
@@ -234,6 +250,10 @@ export default defineComponent({
     async function onSubmit(e: any) {
       e.preventDefault();
 
+      confirm(
+        "Welcome to our online feedback submission system. These terms and conditions govern your use of our platform and your submission of feedback through our website.\r\n\r\n- Acceptance of Terms\r\n\r\nBy accessing or using our website, you agree to be bound by these terms and conditions. \r\nIf you do not agree to these terms and conditions, please do not use our website.\r\n\r\n- Use of the Feedback Submission System\r\n\r\nOur feedback submission system is provided for the purpose of submitting feedback related to our products or services. \r\nYou may only use this system for lawful purposes and in a manner consistent with these terms and conditions. \r\nYou must not use the feedback submission system to submit any feedback that is offensive, defamatory, or infringing on the rights of others.\r\n\r\n- Ownership and License\r\n\r\nYou retain ownership of any feedback that you submit through our feedback submission system. \r\nHowever, by submitting feedback, you grant us a non-exclusive, worldwide, royalty-free license to use, reproduce, \r\nmodify, and distribute your feedback in connection with our products or services.\r\n\r\n- Privacy\r\n\r\nWe take the privacy of our users seriously. Any personal information that you provide to us through our feedback submission system\r\nwill be subject to our privacy policy. By submitting feedback, you acknowledge that you have read and agree to our privacy policy.\r\n\r\n- Limitation of Liability\r\n\r\nTo the fullest extent permitted by law, we will not be liable for any damages arising out of or in connection \r\nwith the use of our feedback submission system, including but not limited to any damages for lost profits, revenue, data, or use.\r\n\r\n- Modification of Terms and Conditions\r\n\r\nWe reserve the right to modify these terms and conditions at any time without prior notice. Any such modifications will be \r\neffective immediately upon posting on our website. Your continued use of our feedback submission system after any modification \r\nconstitutes your acceptance of the modified terms and conditions.\r\n\r\n- Governing Law\r\n\r\nThese terms and conditions are governed by and construed in accordance with the laws of the jurisdiction in which we operate. \r\nAny disputes arising out of or in connection with these terms and conditions will be subject to the exclusive jurisdiction of \r\nthe courts of that jurisdiction.\r\n\r\nBy using our feedback submission system, you agree to these terms and conditions in their entirety. \r\nIf you have any questions about these terms and conditions, please contact us."
+      );
+
       const accessToken = sessionStorage.getItem("acsTkn");
       const username = sessionStorage.getItem("username");
       if (accessToken) {
@@ -298,6 +318,8 @@ export default defineComponent({
       state,
       onSubmit,
       uploadFile,
+      modalActive,
+      toggleModal,
     };
   },
 });
