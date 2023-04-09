@@ -24,6 +24,7 @@
                 class="form-control form-control-lg"
                 placeholder="Academic Year Name"
                 v-model="state.academic_year_name"
+                required
               />
             </div>
 
@@ -35,6 +36,7 @@
                 class="form-control form-control-lg"
                 placeholder="Start Date"
                 v-model="state.start_date"
+                required
               />
             </div>
 
@@ -48,6 +50,7 @@
                 class="form-control form-control-lg"
                 placeholder="Closure Date"
                 v-model="state.closure_date"
+                required
               />
             </div>
 
@@ -61,6 +64,7 @@
                 class="form-control form-control-lg"
                 placeholder="Final Closure Date"
                 v-model="state.final_closure_date"
+                required
               />
             </div>
 
@@ -72,6 +76,7 @@
                   value="{{ state.active }}"
                   id="defaultCheck1"
                   v-model="state.active"
+                  required
                 />
                 <label class="form-check-label" for="defaultCheck1">
                   Active

@@ -77,6 +77,7 @@
                   class="form-control mt-2"
                   placeholder="Write a comment"
                   v-model="state.comment"
+                  required
                 />
                 <button
                   type="button"

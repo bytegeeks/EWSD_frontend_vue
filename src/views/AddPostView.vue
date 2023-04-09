@@ -37,7 +37,7 @@
           </div>
 
           <div class="form-group mb-4">
-            <input type="file" @change="uploadFile" />
+            <input type="file" @change="uploadFile"  />
             <!-- <button @click="submitFile">Submit</button> -->
           </div>
 

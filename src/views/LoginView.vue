@@ -15,6 +15,7 @@
                   class="form-control form-control-lg"
                   placeholder="Email"
                   v-model="state.email"
+                  required
                 />
               </div>
 
@@ -25,6 +26,7 @@
                   class="form-control form-control-lg"
                   placeholder="Password"
                   v-model="state.password"
+                  required
                 />
               </div>
 

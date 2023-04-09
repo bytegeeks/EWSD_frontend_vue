@@ -21,6 +21,7 @@
                 class="form-control form-control-lg"
                 placeholder="Category Name"
                 v-model="state.category_name"
+                required
               />
             </div>
 

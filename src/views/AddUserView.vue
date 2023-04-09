@@ -17,6 +17,7 @@
                   class="form-control form-control-lg"
                   placeholder="Username"
                   v-model="state.username"
+                  required
                 />
               </div>
 
@@ -28,6 +29,7 @@
                   name="dateofbirth"
                   id="dateofbirth"
                   v-model="state.dob"
+                  required
                 />
               </div>
 
@@ -38,6 +40,7 @@
                   class="form-control form-control-lg"
                   placeholder="Phone"
                   v-model="state.phone"
+                  required
                 />
               </div>
 
@@ -48,6 +51,7 @@
                   class="form-control form-control-lg"
                   placeholder="Address"
                   v-model="state.address"
+                  required
                 />
               </div>
 
@@ -58,6 +62,7 @@
                   class="form-control form-control-lg"
                   placeholder="Email"
                   v-model="state.email"
+                  required
                 />
               </div>
 
@@ -68,6 +73,7 @@
                   class="form-control form-control-lg"
                   placeholder="Password"
                   v-model="state.password"
+                  required
                 />
               </div>
 
@@ -78,6 +84,7 @@
                   class="form-control form-control-lg"
                   placeholder="Confirm Password"
                   v-model="state.confirmPassword"
+                  required
                 />
               </div>
 
