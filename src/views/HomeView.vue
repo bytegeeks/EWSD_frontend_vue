@@ -161,7 +161,7 @@ export default defineComponent({
             state.deptStats = data.data;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
 
         axios
@@ -181,7 +181,7 @@ export default defineComponent({
             state.userCount = data.user_count;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
 
         axios
@@ -200,7 +200,7 @@ export default defineComponent({
             state.postCount = data.post_count;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
 
         axios
@@ -219,7 +219,7 @@ export default defineComponent({
             state.categoryCount = data.category_count;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
 
         axios
@@ -238,7 +238,7 @@ export default defineComponent({
             state.deptCount = data.department_count;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     });

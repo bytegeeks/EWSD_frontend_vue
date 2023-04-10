@@ -5,31 +5,39 @@
   <div class="vh-100">
     <div class="container py-5 h-100">
       <div class="row my-3">
-        <div class="col-6">
-          <h1>Add Department</h1>
+        <div class="col-4">
+          <h1>View QA Manager</h1>
         </div>
       </div>
       <hr />
 
       <div class="row p-3">
-        <div class="card bg-dark">
-          <div class="card-body p-4">
-            <div class="form-outline mb-4">
-              <input
-                type="text"
-                id="typeAYNameX-2"
-                class="form-control form-control-lg"
-                placeholder="Department Name"
-                v-model="state.dept_name"
-                required
-              />
-            </div>
-
-            <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
-              Add
-            </button>
-          </div>
-        </div>
+        <table class="table table-hover table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">DOB</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Address</th>
+              <th scope="col">Email</th>
+              <th scope="col">Role</th>
+              <th scope="col">Department</th>
+            </tr>
+          </thead>
+          <tbody v-for="user in state.users" :key="user.user_id">
+            <tr>
+              <td>{{ user.username }}</td>
+              <td>{{ user.user_dob }}</td>
+              <td>{{ user.user_gender }}</td>
+              <td>{{ user.user_phone }}</td>
+              <td>{{ user.user_address }}</td>
+              <td>{{ user.user_email }}</td>
+              <td>{{ user.user_role_id }}</td>
+              <td>{{ user.user_dept_id }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -53,33 +61,20 @@ export default defineComponent({
     const router = useRouter();
 
     const state = reactive({
-      dept_name: "",
+      users: [],
     });
 
     onMounted(() => {
       if (!store.state.loggedIn) {
         router.push({ path: "/login" });
       }
-    });
-
-    function onSubmit(e: any) {
-      e.preventDefault();
-
-      if (state.dept_name === "") {
-        alert("please fill in the department name!");
-        router.go(0);
-      }
 
       const accessToken = sessionStorage.getItem("acsTkn");
       if (accessToken) {
         axios
           .post<any>(
-            "http://localhost:5000/department/create-department",
-            {
-              dept: {
-                dept_name: state.dept_name,
-              },
-            },
+            "http://localhost:5000/user/get-qa-manager",
+            {},
             {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -88,23 +83,17 @@ export default defineComponent({
           )
           .then(({ data }) => {
             console.log(data.status);
-            if (data.status) {
-              alert("added department successfully");
-
-              router.push({
-                path: "/department/view-departments",
-              });
-            }
+            // console.log(data.user_count);
+            state.users = data.users;
           })
           .catch((error) => {
             //console.log(error);
           });
       }
-    }
+    });
 
     return {
       state,
-      onSubmit,
     };
   },
 });

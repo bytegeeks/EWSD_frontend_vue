@@ -70,8 +70,18 @@
                 >
               </li>
               <li>
+                <router-link class="dropdown-item" to="/users/view-qa-manager"
+                  >View QA Manager</router-link
+                >
+              </li>
+              <li>
                 <router-link class="dropdown-item" to="/users/view-qa-coor"
                   >View QA Coordinator</router-link
+                >
+              </li>
+              <li>
+                <router-link class="dropdown-item" to="/users/view-staff"
+                  >View Staff</router-link
                 >
               </li>
 
@@ -170,7 +180,12 @@
                   >View Categories</router-link
                 >
               </li>
-              <li v-if="store.state.role == 'admin' || store.state.role == 'qa_manager'">
+              <li
+                v-if="
+                  store.state.role == 'admin' ||
+                  store.state.role == 'qa_manager'
+                "
+              >
                 <router-link class="dropdown-item" to="/category/add-category"
                   >Add Category</router-link
                 >

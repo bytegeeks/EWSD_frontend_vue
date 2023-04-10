@@ -87,7 +87,7 @@ export default defineComponent({
             state.users = data.users;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     });

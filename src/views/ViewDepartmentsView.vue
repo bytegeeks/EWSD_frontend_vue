@@ -94,7 +94,7 @@ export default defineComponent({
             state.departments = data.data;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     });

@@ -184,7 +184,7 @@ export default defineComponent({
           state.departments = data.data;
         })
         .catch((error) => {
-          console.log(error);
+          //console.log(error);
         });
 
       // fetch academic year details by ay id
@@ -192,7 +192,7 @@ export default defineComponent({
         axios
           .post<any>(
             "http://localhost:5000/user/get-user-profile",
-            {},
+            { t_user_id: route.params.user_id },
             {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -252,7 +252,7 @@ export default defineComponent({
             }
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     }

@@ -16,7 +16,7 @@
           <div class="card-body p-4">
             <div class="form-outline mb-4">
               <label for="typeAYNameX-2"
-                ><strong>Academic Year Name</strong></label
+                ><strong>Academic Year Name (*)</strong></label
               >
               <input
                 type="text"
@@ -29,7 +29,9 @@
             </div>
 
             <div class="form-outline mb-4">
-              <label for="typeStartDateX-2"><strong>Start Date</strong></label>
+              <label for="typeStartDateX-2"
+                ><strong>Start Date (*)</strong></label
+              >
               <input
                 type="date"
                 id="typeStartDateX-2"
@@ -42,7 +44,7 @@
 
             <div class="form-outline mb-4">
               <label for="typeClosureDateX-2"
-                ><strong>Closure Date</strong></label
+                ><strong>Closure Date (*)</strong></label
               >
               <input
                 type="date"
@@ -56,7 +58,7 @@
 
             <div class="form-outline mb-4">
               <label for="typeFinalClosureDateX-2"
-                ><strong>Final Closure Date</strong></label
+                ><strong>Final Closure Date (*)</strong></label
               >
               <input
                 type="date"
@@ -68,7 +70,14 @@
               />
             </div>
 
-            <button class="btn btn-primary btn-lg btn-block" @click="onSubmit">
+            <div>
+              <i>(*) - required</i>
+            </div>
+
+            <button
+              class="btn btn-primary btn-lg btn-block mt-3"
+              @click="onSubmit"
+            >
               Add
             </button>
           </div>
@@ -111,6 +120,16 @@ export default defineComponent({
     function onSubmit(e: any) {
       e.preventDefault();
 
+      if (
+        state.academic_year_name === "" ||
+        state.start_date === "" ||
+        state.closure_date === "" ||
+        state.final_closure_date === ""
+      ) {
+        alert("please fill in all the required fields");
+        router.go(0);
+      }
+
       const accessToken = sessionStorage.getItem("acsTkn");
       if (accessToken) {
         axios
@@ -142,7 +161,7 @@ export default defineComponent({
             }
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     }

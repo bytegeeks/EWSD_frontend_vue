@@ -16,7 +16,8 @@
             <div class="card-body">
               <p>
                 <strong>
-                  Posted on: {{ cmt.comment_date }} by: {{ cmt.user_id }}
+                  Posted on: {{ cmt.comment_date }} by:
+                  {{ !cmt.comment_type ? cmt.user_id : "ANONYMOUS" }}
                 </strong>
               </p>
               <p>{{ cmt.comment_content }}</p>
@@ -87,7 +88,7 @@ export default defineComponent({
             state.comments = data.data;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     });

@@ -206,12 +206,27 @@ export default defineComponent({
           state.departments = data.data;
         })
         .catch((error) => {
-          console.log(error);
+          //console.log(error);
         });
     });
 
     function onSubmit(e: any) {
       e.preventDefault();
+      if (
+        state.username === "" ||
+        state.phone === "" ||
+        state.dob === "" ||
+        state.gender === "" ||
+        state.address === "" ||
+        state.email === "" ||
+        state.password === "" ||
+        state.confirmPassword === "" ||
+        state.role_id === "" ||
+        state.dept_id === ""
+      ) {
+        alert("please fill in all the fields");
+        router.go(0);
+      }
 
       if (state.password !== state.confirmPassword) {
         alert("passwords do not match!!!");

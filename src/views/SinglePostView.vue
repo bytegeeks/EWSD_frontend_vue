@@ -160,7 +160,7 @@ export default defineComponent({
             state.post = data.data;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     });

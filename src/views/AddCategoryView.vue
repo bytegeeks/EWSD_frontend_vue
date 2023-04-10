@@ -65,6 +65,11 @@ export default defineComponent({
     function onSubmit(e: any) {
       e.preventDefault();
 
+      if (state.category_name === "") {
+        alert("please fill in category name!");
+        router.go(0);
+      }
+
       const accessToken = sessionStorage.getItem("acsTkn");
       if (accessToken) {
         axios
@@ -92,7 +97,7 @@ export default defineComponent({
             }
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     }

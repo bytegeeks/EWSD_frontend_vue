@@ -127,7 +127,7 @@ export default defineComponent({
             state.categories = data.data;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     });

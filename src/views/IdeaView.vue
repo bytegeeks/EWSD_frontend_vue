@@ -37,7 +37,9 @@
         type="button"
         @click="(e) => downloadPosts(e)"
         class="btn btn-outline-success mx-3"
-        v-show="!state.isActiveAcademicYear && store.state.role === 'qa_manager'"
+        v-show="
+          !state.isActiveAcademicYear && store.state.role === 'qa_manager'
+        "
       >
         Download Idea Posts CSV
       </a>
@@ -46,7 +48,9 @@
         type="button"
         @click="(e) => downloadAttachments(e)"
         class="btn btn-outline-success mx-3"
-        v-show="!state.isActiveAcademicYear && store.state.role === 'qa_manager'"
+        v-show="
+          !state.isActiveAcademicYear && store.state.role === 'qa_manager'
+        "
       >
         Download Attachment ZIP
       </a>
@@ -57,7 +61,11 @@
             <div class="card-subtitle">
               Posted on: <strong>{{ post.post_date }}</strong> by:
               <strong>{{
-                !post.post_type ? post.username : "ANONYMOUS"
+                store.state.role === "admin"
+                  ? post.username
+                  : !post.post_type
+                  ? post.username
+                  : "ANONYMOUS"
               }}</strong>
               on: <strong>{{ post.category_name }}</strong> in:
               <strong>{{ post.dept_name }}</strong>
@@ -154,7 +162,7 @@ export default defineComponent({
             state.posts = data.data;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     });
@@ -182,7 +190,7 @@ export default defineComponent({
             state.posts = data.data;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     }
@@ -206,7 +214,7 @@ export default defineComponent({
             state.posts = data.data;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     }
@@ -230,7 +238,7 @@ export default defineComponent({
             state.posts = data.data;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     }

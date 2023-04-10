@@ -21,6 +21,8 @@ import EditAcademicYearView from "../views/EditAcademicYearView.vue";
 import EditCategoryView from "../views/EditCategoryView.vue";
 import EditDepartmentView from "../views/EditDepartmentView.vue";
 import EditUserView from "../views/EditUserView.vue";
+import ViewQAMgrView from "../views/ViewQAMgrView.vue";
+import ViewStaff from "../views/ViewStaff.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -62,6 +64,16 @@ const routes: Array<RouteRecordRaw> = [
         path: "/users/view-qa-coor",
         name: "view_qa_coor",
         component: ViewQAView,
+    },
+    {
+        path: "/users/view-qa-manager",
+        name: "view_qa_manager",
+        component: ViewQAMgrView,
+    },
+    {
+        path: "/users/view-staff",
+        name: "view_staff",
+        component: ViewStaff,
     },
     {
         path: "/users/add-user",

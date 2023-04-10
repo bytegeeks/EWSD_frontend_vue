@@ -96,7 +96,7 @@ export default defineComponent({
       axios
         .post<any>(
           "http://localhost:5000/user/delete-user",
-          { user_id: _user_id },
+          { t_user_id: _user_id },
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -135,7 +135,7 @@ export default defineComponent({
             state.users = data.users;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     });

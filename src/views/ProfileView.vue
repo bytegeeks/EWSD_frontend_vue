@@ -69,11 +69,12 @@ export default defineComponent({
       }
 
       const accessToken = sessionStorage.getItem("acsTkn");
+      const user_id = store.state.user_id;
       if (accessToken) {
         axios
           .post<any>(
             "http://localhost:5000/user/get-user-profile",
-            {},
+            { t_user_id: user_id },
             {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -86,7 +87,7 @@ export default defineComponent({
             state.user = data.user;
           })
           .catch((error) => {
-            console.log(error);
+            //console.log(error);
           });
       }
     });
